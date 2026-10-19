@@ -1,0 +1,19 @@
+{
+  "name": "crew-launcher",
+  "version": "0.2.0-alpha.1",
+  "description": "Standalone CREW launcher for Minecraft Java 26.3",
+  "main": "main.cjs",
+  "author": "CREW",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/*.test.cjs"
+  },
+  "dependencies": {
+    "adm-zip": "0.6.1",
+    "pngjs": "7.0.0"
+  },
+  "devDependencies": {
+    "electron": "44.9.0"
+  }
+}

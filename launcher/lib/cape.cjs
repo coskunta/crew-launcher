@@ -1,0 +1,5 @@
+'use strict';
+const {PNG}=require('pngjs');
+function normalize(bytes){if(bytes.length<33||bytes.length>1048576||bytes.readBigUInt64BE(0)!==0x89504e470d0a1a0an||bytes.readUInt32BE(8)!==13||bytes.toString('ascii',12,16)!=='IHDR')throw Error('Bitte eine gültige PNG-Datei bis 1 MB auswählen.');const w=bytes.readUInt32BE(16),h=bytes.readUInt32BE(20);if(![64,128,256,512].includes(w)||h!==w/2)throw Error('Cape benötigt 64×32, 128×64, 256×128 oder 512×256 Pixel.');const png=PNG.sync.read(bytes);const out=Buffer.alloc(8192);for(let y=0;y<32;y++)for(let x=0;x<64;x++){const src=(Math.floor(y*h/32)*w+Math.floor(x*w/64))*4,dst=(y*64+x)*4;out[dst]=png.data[src+3];out[dst+1]=png.data[src];out[dst+2]=png.data[src+1];out[dst+3]=png.data[src+2];}return out;}
+function preview(argb){if(argb.length!==8192)return null;const png=new PNG({width:64,height:32});for(let i=0;i<8192;i+=4){png.data[i]=argb[i+1];png.data[i+1]=argb[i+2];png.data[i+2]=argb[i+3];png.data[i+3]=argb[i];}return 'data:image/png;base64,'+PNG.sync.write(png).toString('base64');}
+module.exports={normalize,preview};

@@ -1,0 +1,7 @@
+{
+ "schemaVersion":1,"id":"crew","version":"${version}","name":"CREW Client","description":"Your crew. Your style. Fabric client with cosmetics and emotes.",
+ "authors":["Onur & CREW"],"license":"MIT","environment":"*",
+ "entrypoints":{"main":["de.crew.CrewMod"],"client":["de.crew.client.CrewClient"]},
+ "mixins":[{"config":"crew.client.mixins.json","environment":"client"}],
+ "depends":{"fabricloader":">=0.19.5","minecraft":"26.3","java":">=25","fabric-api":"*"}
+}

@@ -1,0 +1,12 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
+const root=path.resolve(__dirname,'..'),file=process.argv[2];
+if(!file)throw Error('Usage: node scripts/stage-client.cjs client/build/libs/crew-client-VERSION.jar');
+const source=path.resolve(file),name=path.basename(source);
+if(!/^crew-client-[\w.+-]+\.jar$/.test(name)||name.endsWith('-sources.jar'))throw Error('Choose the compiled CREW client JAR, not the sources JAR.');
+const target=path.join(root,'launcher','bundled');
+fs.copyFileSync(source,path.join(target,name));
+const packFile=path.join(target,'pack.json'),pack=JSON.parse(fs.readFileSync(packFile,'utf8'));
+pack.crew={name,sha256:crypto.createHash('sha256').update(fs.readFileSync(source)).digest('hex')};
+fs.writeFileSync(packFile,JSON.stringify(pack,null,2)+'\n');
+console.log('Staged '+name+' for the launcher.');
